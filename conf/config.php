@@ -23,7 +23,7 @@ $config['uptimecommand_keyword'] = '!uptime';
 // 1: to reply to users command with @<username>
 // 2: to reply to users command with <username>
 // 3: to reply to users command without reference to the user who triggered it.
-$config['reply_format'] = 3;
+$config['reply_format'] = 1;
 
 
 // periodic messages:
@@ -75,5 +75,5 @@ $config['poll_help_message'] = '<poll\'s duration in minutes> <free text describ
 $config['admin_makepoll_keyword'] = '!makepoll';
 $config['admin_cancelpoll_keyword'] = '!cancelpoll';
 $config['votecommand_keyword'] = '!vote';
-$config['new_poll_announcement_message'] = 'New poll is running';
-$config['poll_closure_announcement_message'] = 'Poll was closed.';
+$config['new_poll_announcement_message'] = 'Новое голосование на срок';
+$config['poll_closure_announcement_message'] = 'Голосование закрыто.';

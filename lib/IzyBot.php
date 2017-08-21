@@ -57,7 +57,7 @@ class IzyBot {
         $this->start_timestamp = date('U');
         
         $this->bot_config = $config;
-        $this->bot_config['botinfocommand_keyword'] = '!тыктоваще';
+        $this->bot_config['botinfocommand_keyword'] = 'здарова';
         
         // twitch info:
         $this->hostname = 'irc.twitch.tv';
@@ -617,7 +617,7 @@ class IzyBot {
         $this->_log_it('INFO', __FUNCTION__, 'Login commands were sent. Bot is ready.');
 
         //send enter message
-        $this->send_text_to_server('bot', 'PRIVMSG ' . $this->channel . ' :' . 'Ботислав в чятi HeyGuys');
+        $this->send_text_to_server('bot', 'PRIVMSG ' . $this->channel . ' :' . 'Ботислав в чатi HeyGuys'.' Напиши !help');
         //
         return TRUE;
     }
@@ -960,18 +960,21 @@ class IzyBot {
     //----------------------------------------------------------------------------------
     private function _display_help_command($username, $channel, $words_in_message_text, $message_text)
     {
-        $message = 'Available commands: ';
-        foreach ($this->admin_commands as $command => $response)
-        {
-            $message .= ' ' . $command;
-        }
-        //
-        foreach ($this->admin_commands_nonsafe as $command => $response)
-        {
-            $message .= ' ' . $command;
-        }
-        //
-        $message .=  ' ' . $this->bot_config['helpcommand_keyword'] . ' ' . $this->bot_config['uptimecommand_keyword'] . ' ' . $this->bot_config['botinfocommand_keyword'] . ' .';
+
+        $message = 'Я понимаю только: ';
+        // foreach ($this->admin_commands as $command => $response)
+        // {
+        //     $message .= ' ' . $command;
+        // }
+        // //
+        // foreach ($this->admin_commands_nonsafe as $command => $response)
+        // {
+        //     $message .= ' ' . $command;
+        // }
+        
+        // user commands
+        $message .=  ' "' .$this->bot_config['botinfocommand_keyword'].'"';
+        $message .= ' '.', потому что пока я тупой BibleThump ';
         //
         if ($this->_check_response_should_be_silenced($this->bot_config['helpcommand_keyword']) === FALSE)
         {
@@ -1002,7 +1005,7 @@ class IzyBot {
     //----------------------------------------------------------------------------------
     private function _display_botinfo_command($username, $channel, $words_in_message_text, $message_text)
     {
-        $message = 'Меня зовут '.$this->bot_name.' HeyGuys';
+        $message = 'Здарова, меня зовут Ботислав KonCha скоро я вырасту и @liptonus_bot соснет у меня. SeemsGood ';
         //
         if ($this->_check_response_should_be_silenced($this->bot_config['botinfocommand_keyword']) === FALSE)
         {
@@ -1089,7 +1092,7 @@ class IzyBot {
 
                 $this->poll_duration = $words_in_message_text[1];
                 //
-                $this->send_text_to_server('bot', 'PRIVMSG ' . $this->channel . ' : ' . $this->bot_config['new_poll_announcement_message'] . ' for the next ' . $this->poll_duration . ' seconds: ' . $this->poll_question);
+                $this->send_text_to_server('bot', 'PRIVMSG ' . $this->channel . ' : ' . $this->bot_config['new_poll_announcement_message'] . ' ' . $this->poll_duration . ' сек: ' . $this->poll_question);
                 return TRUE;
             }
             else
@@ -1182,28 +1185,30 @@ class IzyBot {
                 }
             }
             //
-            $results_text = 'Total votes: ' . $votes_count . '. ';
+            $results_text = '';
             //
             if ($votes_count > 0)
-            {
+            { 
+                $results_text = 'Выбрали';
                 // sort in descending order first
                 arsort($poll_results);
                 //
                 $current_row = 0;
                 foreach ($poll_results as $poll_result => $poll_count)
                 {
-                    $vote_text = ($poll_count === 1) ? 'vote' : 'votes';
+                    $vote_text = ($poll_count === 1) ? 'голос' : 'голоса';
                     
                     if ($current_row === 0)
                     {
-                        $results_text .= ' option ' . $poll_result . ': ' . $poll_count . ' ' . $vote_text . ' (' . intval((100*$poll_count)/$votes_count) . '%) ';
+                        $results_text .= ' "' . $poll_result . '" : ' . $poll_count . ' ' . $vote_text . ' (' . intval((100*$poll_count)/$votes_count) . '%) ';
                     }
                     else
                     {
-                        $results_text .= ', option ' . $poll_result . ': ' . $poll_count . ' ' . $vote_text . ' (' . intval((100*$poll_count)/$votes_count) . '%) ';
+                        $results_text .= ', "' . $poll_result . '" : ' . $poll_count . ' ' . $vote_text . ' (' . intval((100*$poll_count)/$votes_count) . '%) ';
                     }
                     $current_row++;
                 }
+                $results_text .= '. вопрос был: ('.$this->poll_question.')';
             }
             // write poll results to file:
             $this->_write_poll_results($poll_results, $results_text);
@@ -1213,7 +1218,7 @@ class IzyBot {
 
             $this->poll_duration = NULL;
             //
-            $this->send_text_to_server('bot', 'PRIVMSG ' . $this->channel . ' : ' . $this->bot_config['poll_closure_announcement_message'] . ' The results are: ' . $results_text);
+            $this->send_text_to_server('bot', 'PRIVMSG ' . $this->channel . ' : ' . $this->bot_config['poll_closure_announcement_message'] . '' . $results_text);
         }
         //
         return TRUE;
