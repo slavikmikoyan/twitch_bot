@@ -617,7 +617,7 @@ class IzyBot {
         $this->_log_it('INFO', __FUNCTION__, 'Login commands were sent. Bot is ready.');
 
         //send enter message
-        $this->send_text_to_server('bot', 'PRIVMSG ' . $channel . ' :' . $message);
+        $this->send_text_to_server('bot', 'PRIVMSG ' . $this->channel . ' :' . 'Ботислав в чятi HeyGuys');
         //
         return TRUE;
     }
